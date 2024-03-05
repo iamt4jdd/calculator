@@ -2,6 +2,7 @@ package com.example.calculator;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -19,6 +20,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     MaterialButton buttonC, buttonBrackOpen, buttonBrackClose;
     MaterialButton buttonDivide, buttonMultiply, buttonPlus, buttonMinus, buttonEquals;
     MaterialButton button0, button1, button2, button3, button4, button5, button6, button7, button8, button9;
+
+    MaterialButton button_squareroot, button_sin, button_inversex, button_2px, button_tan_1, button_cuberoot, button_cos, button_epx, button_xp3;
+
     MaterialButton buttonAC, buttonDot;
 
     @Override
@@ -48,6 +52,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         assignId(button9, R.id.button_9);
         assignId(buttonAC, R.id.button_ac);
         assignId(buttonDot, R.id.button_dot);
+        assignId(button_squareroot, R.id.button_square_root);
+        assignId(button_inversex, R.id.button_inversex);
+        assignId(button_2px, R.id.button_2powerx);
+        assignId(button_tan_1, R.id.button_inverse_tan);
+        assignId(button_cuberoot, R.id.button_square_root3);
+        assignId(button_cos, R.id.button_cos);
+        assignId(button_epx, R.id.button_epowerx);
+        assignId(button_xp3, R.id.button_xpower3);
+        assignId(button_sin, R.id.button_sin);
+
     }
 
     void assignId(MaterialButton btn, int id) {
@@ -57,41 +71,157 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        MaterialButton button =(MaterialButton) view;
+        MaterialButton button = (MaterialButton) view;
         String buttonText = button.getText().toString();
         String dataToCalculate = solutionTv.getText().toString();
+        switch (buttonText) {
+            case "AC":
+                clearAll();
+                break;
+            case "=":
+                solutionTv.setText(resultTv.getText());
+                break;
+            case "C":
+                clearLast();
+                break;
+            case "√":
+                handleSquareRoot(dataToCalculate);
+                break;
+            case "∛":
+                handleCubeRoot(dataToCalculate);
+                break;
+            case "sin":
+            case "cos":
+            case "tan⁻¹":
+                handleTrigonometricFunction(buttonText, dataToCalculate);
+                break;
+            case "1/x":
+                handleReciprocal(dataToCalculate);
+                break;
+            case "2ˣ":
+                handleExponential(dataToCalculate, 2);
+                break;
+            case "eˣ":
+                handleExponential(dataToCalculate, Math.E);
+                break;
+            case "x²":
+                handleExponentiation(dataToCalculate, 2);
+                break;
+            case "x³":
+                handleExponentiation(dataToCalculate, 3);
+                break;
+            default:
+                appendToDataToCalculate(buttonText);
+                break;
+        }
+        evaluateAndDisplay(buttonText);
 
-        if (buttonText.equals("AC")) {
-            solutionTv.setText("");
+
+    }
+
+    private void clearAll() {
+        solutionTv.setText("");
+        resultTv.setText("0");
+    }
+
+    private void clearLast() {
+        String currentData = solutionTv.getText().toString();
+        if (!currentData.isEmpty()) {
+            solutionTv.setText(currentData.substring(0, currentData.length() - 1));
+            if (solutionTv.getText().equals("")) {
+                resultTv.setText("");
+            }
+        } else {
             resultTv.setText("0");
-            return;
+            System.out.println("Data to calculate is already empty.");
         }
-        if(buttonText.equals("=")){
-            solutionTv.setText(resultTv.getText());
-            return;
-        }
-        if (buttonText.equals("C")) {
-            if (dataToCalculate.length() > 0) {
-                dataToCalculate = dataToCalculate.substring(0, dataToCalculate.length() - 1);
-            }
-             else{
-                resultTv.setText("0");
-                solutionTv.setText("");
-                System.out.println("Data to calculate is already empty.");
-                System.out.println(dataToCalculate.length());
-            }
-        }else {
-                dataToCalculate = dataToCalculate+buttonText;
-            }
+    }
 
-            solutionTv.setText(dataToCalculate);
-            resultTv.setText("0");
-            String finalResult = getResult(dataToCalculate);
-
-            if(!finalResult.equals("Err") && !finalResult.equals("org.mozilla")) {
-                resultTv.setText(finalResult);
-            }
+    private void appendToDataToCalculate(String buttonText) {
+        String specialCharacters = "√∛sincostan2ˣeˣx²x³tan⁻¹";
+        if (!specialCharacters.contains(buttonText) && !buttonText.equals("-") && !buttonText.equals("2")) {
+            solutionTv.append(buttonText);
         }
+    }
+
+
+
+    private void handleTrigonometricFunction(String function, String dataToCalculate) {
+        double number = Double.parseDouble(dataToCalculate);
+        double radians = Math.toRadians(number);
+        double result;
+
+        switch (function) {
+            case "sin":
+                result = Math.sin(radians);
+                solutionTv.setText("Error: Division by zero");
+
+                break;
+            case "cos":
+                result = Math.cos(radians);
+                break;
+            case "tan⁻¹":
+                result = Math.atan(number);
+                break;
+            default:
+                result = 0;
+                break;
+        }
+        solutionTv.setText(String.valueOf(result));
+    }
+    private void handleSquareRoot(String dataToCalculate) {
+        double number = Double.parseDouble(dataToCalculate);
+        double sqrtResult = Math.sqrt(number);
+        solutionTv.setText(String.valueOf(sqrtResult));
+    }
+
+    private void handleCubeRoot(String dataToCalculate) {
+        double number = Double.parseDouble(dataToCalculate);
+        double cbrtResult = Math.cbrt(number);
+        solutionTv.setText(String.valueOf(cbrtResult));
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void handleReciprocal(String dataToCalculate) {
+        double number = Double.parseDouble(dataToCalculate);
+        if (number != 0) {
+            double result = 1 / number;
+            solutionTv.setText(String.valueOf(result));
+        } else {
+            solutionTv.setText("Error: Division by zero");
+        }
+    }
+
+    private void handleExponential(String dataToCalculate, double base) {
+        double number = Double.parseDouble(dataToCalculate);
+        double result = Math.pow(base, number);
+        solutionTv.setText(String.valueOf(result));
+    }
+
+    private void handleExponentiation(String dataToCalculate, int exponent) {
+        double number = Double.parseDouble(dataToCalculate);
+        double result = Math.pow(number, exponent);
+        solutionTv.setText(String.valueOf(result));
+    }
+
+
+    private void evaluateAndDisplay(String buttonText) {
+        String dataToCalculate = solutionTv.getText().toString();
+        String finalResult = getResult(dataToCalculate);
+//        if(buttonText.contains("√")){
+//            solutionTv.setText("");
+//        }
+        if (solutionTv.getText().equals("")) {
+            resultTv.setText("");
+        }
+        if (!finalResult.equals("Err")) {
+            resultTv.setText(finalResult);
+        }
+
+    }
+
+
+
 
     String getResult(String data) {
         try {
