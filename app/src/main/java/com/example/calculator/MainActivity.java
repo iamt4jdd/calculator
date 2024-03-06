@@ -3,7 +3,9 @@ package com.example.calculator;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -54,24 +56,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         assignId(button9, R.id.button_9);
         assignId(buttonAC, R.id.button_ac);
         assignId(buttonDot, R.id.button_dot);
-        assignId(button_squareroot, R.id.button_square_root);
-        assignId(button_inversex, R.id.button_inversex);
-        assignId(button_2px, R.id.button_2powerx);
-        assignId(button_tan_1, R.id.button_inverse_tan);
-        assignId(button_cuberoot, R.id.button_square_root3);
-        assignId(button_cos, R.id.button_cos);
-        assignId(button_epx, R.id.button_epowerx);
-        assignId(button_xp3, R.id.button_xpower3);
-        assignId(button_sin, R.id.button_sin);
-        assignId(button_sinh, R.id.button_sinh);
-        assignId(button_absolute, R.id.button_absolute);
-        assignId(button_tan, R.id.button_tan);
-        assignId(button_xp2, R.id.button_xpower2);
-        assignId(button_xfactorial, R.id.button_xfactorial);
-        assignId(button_cosh, R.id.button_cosh);
-        assignId(button_pi, R.id.button_pi);
-        assignId(button_ln, R.id.button_ln);
-
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            assignId(button_squareroot, R.id.button_square_root);
+            assignId(button_inversex, R.id.button_inversex);
+            assignId(button_2px, R.id.button_2powerx);
+            assignId(button_tan_1, R.id.button_inverse_tan);
+            assignId(button_cuberoot, R.id.button_square_root3);
+            assignId(button_cos, R.id.button_cos);
+            assignId(button_epx, R.id.button_epowerx);
+            assignId(button_xp3, R.id.button_xpower3);
+            assignId(button_sin, R.id.button_sin);
+            assignId(button_sinh, R.id.button_sinh);
+            assignId(button_absolute, R.id.button_absolute);
+            assignId(button_tan, R.id.button_tan);
+            assignId(button_xp2, R.id.button_xpower2);
+            assignId(button_xfactorial, R.id.button_xfactorial);
+            assignId(button_cosh, R.id.button_cosh);
+            assignId(button_pi, R.id.button_pi);
+            assignId(button_ln, R.id.button_ln);
+        }
 
     }
 
@@ -82,73 +85,76 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        MaterialButton button = (MaterialButton) view;
-        String buttonText = button.getText().toString();
-        String dataToCalculate = solutionTv.getText().toString();
-        switch (buttonText) {
-            case "AC":
-                clearAll();
-                break;
-            case "=":
-                solutionTv.setText(resultTv.getText());
-                break;
-            case "C":
-                clearLast();
-                break;
-            case "√":
-                handleSquareRoot(dataToCalculate);
-                break;
-            case "∛":
-                handleCubeRoot(dataToCalculate);
-                break;
-            case "sin":
-            case "cos":
-            case "tan⁻¹":
-                handleTrigonometricFunction(buttonText, dataToCalculate);
-                break;
-            case "1/x":
-                handleReciprocal(dataToCalculate);
-                break;
-            case "2ˣ":
-                handleExponential(dataToCalculate, 2);
-                break;
-            case "eˣ":
-                handleExponential(dataToCalculate, Math.E);
-                break;
-            case "x²":
-                handleExponentiation(dataToCalculate, 2);
-                break;
-            case "x³":
-                handleExponentiation(dataToCalculate, 3);
-                break;
-            case "π":
-                handlePi();
-                break;
-            case "|x|":
-                handleAbsoluteValue(dataToCalculate);
-                break;
-            case "sinh":
-                handleSinh(dataToCalculate);
-                break;
-            case "cosh":
-                handleCosh(dataToCalculate);
-                break;
-            case "ln":
-                handleNaturalLog(dataToCalculate);
-                break;
-            case "tan":
-                handleTan(dataToCalculate);
-                break;
-            case "x!":
-                handleFactorial(dataToCalculate);
-                break;
-            default:
-                appendToDataToCalculate(buttonText);
-                break;
+        try{
+            MaterialButton button = (MaterialButton) view;
+            String buttonText = button.getText().toString();
+            String dataToCalculate = solutionTv.getText().toString();
+            switch (buttonText) {
+                case "AC":
+                    clearAll();
+                    break;
+                case "=":
+                    solutionTv.setText(resultTv.getText());
+                    break;
+                case "C":
+                    clearLast();
+                    break;
+                case "√":
+                    handleSquareRoot(dataToCalculate);
+                    break;
+                case "∛":
+                    handleCubeRoot(dataToCalculate);
+                    break;
+                case "sin":
+                case "cos":
+                case "tan⁻¹":
+                    handleTrigonometricFunction(buttonText, dataToCalculate);
+                    break;
+                case "1/x":
+                    handleReciprocal(dataToCalculate);
+                    break;
+                case "2ˣ":
+                    handleExponential(dataToCalculate, 2);
+                    break;
+                case "eˣ":
+                    handleExponential(dataToCalculate, Math.E);
+                    break;
+                case "x²":
+                    handleExponentiation(dataToCalculate, 2);
+                    break;
+                case "x³":
+                    handleExponentiation(dataToCalculate, 3);
+                    break;
+                case "π":
+                    handlePi();
+                    break;
+                case "|x|":
+                    handleAbsoluteValue(dataToCalculate);
+                    break;
+                case "sinh":
+                    handleSinh(dataToCalculate);
+                    break;
+                case "cosh":
+                    handleCosh(dataToCalculate);
+                    break;
+                case "ln":
+                    handleNaturalLog(dataToCalculate);
+                    break;
+                case "tan":
+                    handleTan(dataToCalculate);
+                    break;
+                case "x!":
+                    handleFactorial(dataToCalculate);
+                    break;
+                default:
+                    appendToDataToCalculate(buttonText);
+                    break;
+            }
+            evaluateAndDisplay(buttonText);
+        } catch(Exception e)
+        {
+            Log.d("ERROR!!!", e.toString());
         }
-        evaluateAndDisplay(buttonText);
-
-
     }
 
     private void clearAll() {
