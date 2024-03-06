@@ -159,6 +159,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 case "sin⁻¹":
                     handleASin();
                     break;
+                case "tanh":
+                    handleTanh();
+                    break;
                 default:
                     appendToDataToCalculate(buttonText);
                     break;
@@ -293,6 +296,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         solutionTv.setText(String.valueOf(tanResult));
     }
 
+    private void handleTanh() {
+        solutionTv.setText("tanh(");
+    }
+
     private void handleFactorial(String dataToCalculate) {
         int number = Integer.parseInt(dataToCalculate);
         double factorialResult = calculateFactorial(number);
@@ -361,26 +368,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 }
 
-//            if (data.contains("sin(")) {
-//                int sinLoc = data.indexOf("sin(");
-//                String sinValue = "";
-//                boolean isValidEquation = false;
-//
-//                int i = sinLoc + 4;
-//                String numbers_dot = "1234567890.";
-//                while (i < data.length() && numbers_dot.contains(data.substring(i, i+1))) {
-//                    if(data.substring(i, i+1).equals(")")) {
-//                        isValidEquation = true;
-//                    }
-//                    sinValue = sinValue.concat(data.substring(i, i+1));
-//                    i++;
-//                }
-//
-//                if (isValidEquation) {
-//                    data = data.replace("sin(" + sinValue+")", "Math.sin("+sinValue+" * * Math.PI / 180)");
-//                }
-//            }
-
             if (data.contains("sin⁻¹(")) {
                 int sinLoc = data.indexOf("sin⁻¹(");
                 String sinValue = "";
@@ -400,6 +387,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 //                if (isValidEquation) {
 //                }
+            }
+
+            if (data.contains("tanh(")) {
+                int tanhLoc = data.indexOf("tanh(");
+                String tanhValue = "";
+//                boolean isValidEquation = false;
+
+                int i = tanhLoc + 5;
+                String numbers_dot = "1234567890.";
+                while (i < data.length() && numbers_dot.contains(data.substring(i, i+1))) {
+                    tanhValue = tanhValue.concat(data.substring(i, i+1));
+                    i++;
+                }
+
+                if(data.substring(i, i+1).equals(")")) {
+                    data = data.replace("tanh(" + tanhValue+")", "Math.tanh("+tanhValue+")");
+                }
+
             }
 
             Context context = Context.enter();
