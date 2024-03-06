@@ -14,6 +14,7 @@ import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.Undefined;
 
+
 import java.text.DecimalFormat;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
@@ -123,10 +124,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     handleExponential(dataToCalculate, Math.E);
                     break;
                 case "x²":
-                    handleExponentiation(dataToCalculate, 2);
+                    solutionTv.append("^2");
+//                    handleExponentiation(dataToCalculate, 2);
                     break;
                 case "x³":
-                    handleExponentiation(dataToCalculate, 3);
+                    solutionTv.append("^3");
+//                    handleExponentiation(dataToCalculate, 3);
                     break;
                 case "π":
                     handlePi();
@@ -314,13 +317,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    private String revereString(String input) {
+        StringBuilder output = new StringBuilder();
+        for (int i = input.length() - 1; i >= 0; i--) {
+            output.append(input.charAt(i));
+        }//from  w ww .j av a 2  s .  c  om
+        return output.toString();
+    }
     String getResult(String data) {
         try {
+            Log.d("MATH EQUATION", data);
+            if (data.contains("^")) {
+                int carectLoc = data.indexOf("^");
+                String baseValue = "";
+                String exponentValue = "";
+                int equaStartLoc;
+                int equaEndLoc;
+                int i = carectLoc - 1;
+                String numbers_dot = "1234567890.";
+                while (i >= 0 && numbers_dot.contains(data.substring(i, i+1))) {
+                    baseValue = baseValue.concat(data.substring(i, i+1));
+                    i--;
+                }
+                equaStartLoc = i+1;
+
+                i = carectLoc + 1;
+                while (i < data.length() && numbers_dot.contains(data.substring(i, i+1))) {
+                    exponentValue = exponentValue.concat(data.substring(i, i+1));
+                    i++;
+                }
+                equaEndLoc = i-1;
+                if(equaEndLoc != carectLoc){
+                    baseValue = revereString(baseValue);
+                    data = data.replace(baseValue+"^"+exponentValue, "Math.pow("+baseValue+","+exponentValue+")");
+                }
+                }
+
             Context context = Context.enter();
             context.setOptimizationLevel(-1);
             Scriptable scriptable = context.initStandardObjects();
             Object result = context.evaluateString(scriptable, data, "JavaScript", 1, null);
-
+            Log.d("Equation", result.toString());
             // Check if the result is null or undefined
             if (result == null || result == Undefined.instance) {
                 return "Err";
