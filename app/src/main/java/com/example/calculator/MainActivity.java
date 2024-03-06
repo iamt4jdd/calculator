@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     MaterialButton button_squareroot, button_sin, button_inversex, button_2px, button_tan_1, button_cuberoot, button_cos, button_epx, button_xp3;
 
-    MaterialButton button_absolute, button_pi, button_sinh, button_cosh, button_ln, button_tan, button_xp2, button_xfactorial;
+    MaterialButton button_absolute, button_pi, button_sinh, button_inverse_sin, button_cosh, button_tanh, button_ln, button_tan, button_xp2, button_xfactorial;
 
     MaterialButton button_xpy;
     MaterialButton buttonAC, buttonDot;
@@ -77,7 +77,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             assignId(button_pi, R.id.button_pi);
             assignId(button_ln, R.id.button_ln);
             assignId(button_xpy, R.id.button_xpowery);
-
+            assignId(button_inverse_sin, R.id.button_inverse_sin);
+            assignId(button_tanh, R.id.button_tanh);
         }
 
     }
@@ -155,6 +156,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 case "xʸ":
                     handleXToPowerY(dataToCalculate);
                     break;
+                case "sin⁻¹":
+                    handleASin();
+                    break;
                 default:
                     appendToDataToCalculate(buttonText);
                     break;
@@ -164,6 +168,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         {
             Log.d("ERROR!!!", e.toString());
         }
+    }
+
+    private void handleASin() {
+        solutionTv.append("sin⁻¹(");
     }
 
     private void clearAll() {
@@ -321,7 +329,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         StringBuilder output = new StringBuilder();
         for (int i = input.length() - 1; i >= 0; i--) {
             output.append(input.charAt(i));
-        }//from  w ww .j av a 2  s .  c  om
+        }
         return output.toString();
     }
     String getResult(String data) {
@@ -352,6 +360,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     data = data.replace(baseValue+"^"+exponentValue, "Math.pow("+baseValue+","+exponentValue+")");
                 }
                 }
+
+//            if (data.contains("sin(")) {
+//                int sinLoc = data.indexOf("sin(");
+//                String sinValue = "";
+//                boolean isValidEquation = false;
+//
+//                int i = sinLoc + 4;
+//                String numbers_dot = "1234567890.";
+//                while (i < data.length() && numbers_dot.contains(data.substring(i, i+1))) {
+//                    if(data.substring(i, i+1).equals(")")) {
+//                        isValidEquation = true;
+//                    }
+//                    sinValue = sinValue.concat(data.substring(i, i+1));
+//                    i++;
+//                }
+//
+//                if (isValidEquation) {
+//                    data = data.replace("sin(" + sinValue+")", "Math.sin("+sinValue+" * * Math.PI / 180)");
+//                }
+//            }
+
+            if (data.contains("sin⁻¹(")) {
+                int sinLoc = data.indexOf("sin⁻¹(");
+                String sinValue = "";
+//                boolean isValidEquation = false;
+
+                int i = sinLoc + 6;
+                String numbers_dot = "1234567890.";
+                while (i < data.length() && numbers_dot.contains(data.substring(i, i+1))) {
+                    sinValue = sinValue.concat(data.substring(i, i+1));
+                    i++;
+                }
+
+                if(data.substring(i, i+1).equals(")")) {
+//                    isValidEquation = true;
+                    data = data.replace("sin⁻¹(" + sinValue+")", "(Math.asin("+sinValue+") * 180 / Math.PI)");
+                }
+
+//                if (isValidEquation) {
+//                }
+            }
 
             Context context = Context.enter();
             context.setOptimizationLevel(-1);
