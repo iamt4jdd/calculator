@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     MaterialButton button_absolute, button_pi, button_sinh, button_cosh, button_ln, button_tan, button_xp2, button_xfactorial;
 
+    MaterialButton button_xpy;
     MaterialButton buttonAC, buttonDot;
 
     @Override
@@ -74,6 +75,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             assignId(button_cosh, R.id.button_cosh);
             assignId(button_pi, R.id.button_pi);
             assignId(button_ln, R.id.button_ln);
+            assignId(button_xpy, R.id.button_xpowery);
+
         }
 
     }
@@ -145,6 +148,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
                 case "x!":
                     handleFactorial(dataToCalculate);
+                    break;
+                case "xʸ":
+                    handleXToPowerY(dataToCalculate);
                     break;
                 default:
                     appendToDataToCalculate(buttonText);
@@ -282,6 +288,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         solutionTv.setText(String.valueOf(factorialResult));
     }
 
+    private void handleXToPowerY(String dataToCalculate){
+        solutionTv.append("^");
+    }
     private double calculateFactorial(int n) {
         if (n == 0 || n == 1) {
             return 1;
@@ -289,7 +298,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return n * calculateFactorial(n - 1);
         }
     }
-
 
     private void evaluateAndDisplay(String buttonText) {
         String dataToCalculate = solutionTv.getText().toString();
@@ -305,9 +313,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
-
-
-
 
     String getResult(String data) {
         try {
