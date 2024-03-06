@@ -23,6 +23,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     MaterialButton button_squareroot, button_sin, button_inversex, button_2px, button_tan_1, button_cuberoot, button_cos, button_epx, button_xp3;
 
+    MaterialButton button_absolute, button_pi, button_sinh, button_cosh, button_ln, button_tan, button_xp2, button_xfactorial;
+
     MaterialButton buttonAC, buttonDot;
 
     @Override
@@ -61,6 +63,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         assignId(button_epx, R.id.button_epowerx);
         assignId(button_xp3, R.id.button_xpower3);
         assignId(button_sin, R.id.button_sin);
+        assignId(button_sinh, R.id.button_sinh);
+        assignId(button_absolute, R.id.button_absolute);
+        assignId(button_tan, R.id.button_tan);
+        assignId(button_xp2, R.id.button_xpower2);
+        assignId(button_xfactorial, R.id.button_xfactorial);
+        assignId(button_cosh, R.id.button_cosh);
+        assignId(button_pi, R.id.button_pi);
+        assignId(button_ln, R.id.button_ln);
+
 
     }
 
@@ -110,6 +121,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case "x³":
                 handleExponentiation(dataToCalculate, 3);
                 break;
+            case "π":
+                handlePi();
+                break;
+            case "|x|":
+                handleAbsoluteValue(dataToCalculate);
+                break;
+            case "sinh":
+                handleSinh(dataToCalculate);
+                break;
+            case "cosh":
+                handleCosh(dataToCalculate);
+                break;
+            case "ln":
+                handleNaturalLog(dataToCalculate);
+                break;
+            case "tan":
+                handleTan(dataToCalculate);
+                break;
+            case "x!":
+                handleFactorial(dataToCalculate);
+                break;
             default:
                 appendToDataToCalculate(buttonText);
                 break;
@@ -139,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void appendToDataToCalculate(String buttonText) {
         String specialCharacters = "√∛sincostan2ˣeˣx²x³tan⁻¹";
-        if (!specialCharacters.contains(buttonText) && !buttonText.equals("-") && !buttonText.equals("2")) {
+        if (!specialCharacters.contains(buttonText)) {
             solutionTv.append(buttonText);
         }
     }
@@ -155,7 +187,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case "sin":
                 result = Math.sin(radians);
                 solutionTv.setText("Error: Division by zero");
-
                 break;
             case "cos":
                 result = Math.cos(radians);
@@ -202,6 +233,55 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         double number = Double.parseDouble(dataToCalculate);
         double result = Math.pow(number, exponent);
         solutionTv.setText(String.valueOf(result));
+    }
+
+    private void handlePi() {
+        double piValue = Math.PI;
+        solutionTv.append(String.valueOf(piValue));
+    }
+
+    private void handleAbsoluteValue(String dataToCalculate) {
+        double number = Double.parseDouble(dataToCalculate);
+        double absValue = Math.abs(number);
+        solutionTv.setText(String.valueOf(absValue));
+    }
+
+    private void handleSinh(String dataToCalculate) {
+        double number = Double.parseDouble(dataToCalculate);
+        double sinhResult = Math.sinh(number);
+        solutionTv.setText(String.valueOf(sinhResult));
+    }
+
+    private void handleCosh(String dataToCalculate) {
+        double number = Double.parseDouble(dataToCalculate);
+        double coshResult = Math.cosh(number);
+        solutionTv.setText(String.valueOf(coshResult));
+    }
+
+    private void handleNaturalLog(String dataToCalculate) {
+        double number = Double.parseDouble(dataToCalculate);
+        double lnResult = Math.log(number);
+        solutionTv.setText(String.valueOf(lnResult));
+    }
+
+    private void handleTan(String dataToCalculate) {
+        double number = Double.parseDouble(dataToCalculate);
+        double tanResult = Math.tan(number);
+        solutionTv.setText(String.valueOf(tanResult));
+    }
+
+    private void handleFactorial(String dataToCalculate) {
+        int number = Integer.parseInt(dataToCalculate);
+        double factorialResult = calculateFactorial(number);
+        solutionTv.setText(String.valueOf(factorialResult));
+    }
+
+    private double calculateFactorial(int n) {
+        if (n == 0 || n == 1) {
+            return 1;
+        } else {
+            return n * calculateFactorial(n - 1);
+        }
     }
 
 
