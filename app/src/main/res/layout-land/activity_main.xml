@@ -373,14 +373,14 @@
                 app:cornerRadius="36dp" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_rad"
+                android:id="@+id/button_10powerx"
                 style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
                 android:layout_width="85dp"
                 android:layout_height="48dp"
                 android:layout_marginHorizontal="2dp"
                 android:layout_marginVertical="4dp"
                 android:backgroundTint="#454343"
-                android:text="rad"
+                android:text="10ˣ"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="20sp"

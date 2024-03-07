@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.content.res.Configuration;
+import android.util.Log;
 
 import com.google.android.material.button.MaterialButton;
 import org.mozilla.javascript.Context;
@@ -17,16 +19,23 @@ import org.mozilla.javascript.Undefined;
 
 import java.text.DecimalFormat;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     TextView resultTv, solutionTv;
     MaterialButton buttonC, buttonBrackOpen, buttonBrackClose;
     MaterialButton buttonDivide, buttonMultiply, buttonPlus, buttonMinus, buttonEquals;
     MaterialButton button0, button1, button2, button3, button4, button5, button6, button7, button8, button9;
 
-    MaterialButton button_squareroot, button_sin, button_inversex, button_2px, button_tan_1, button_cuberoot, button_cos, button_epx, button_xp3;
+    MaterialButton button_squareroot, button_sin, button_inversex, button_2px, button_tan_1, button_cuberoot,
+            button_cos, button_epx, button_xp3;
 
-    MaterialButton button_absolute, button_pi, button_sinh, button_inverse_sin, button_cosh, button_tanh, button_ln, button_tan, button_xp2, button_xfactorial;
+
+    MaterialButton button_absolute, button_pi, button_sinh, button_cosh, button_ln, button_tan, button_xp2,
+            button_xfactorial;
+
+    MaterialButton button_e, button_log, button_10px, button_inverse_cos, button_percent, button_tanh, button_xpy, 
+            button_inverse_sin;
+
 
     MaterialButton button_xpy;
     MaterialButton buttonAC, buttonDot;
@@ -59,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         assignId(buttonAC, R.id.button_ac);
         assignId(buttonDot, R.id.button_dot);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+
             assignId(button_squareroot, R.id.button_square_root);
             assignId(button_inversex, R.id.button_inversex);
             assignId(button_2px, R.id.button_2powerx);
@@ -76,6 +86,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             assignId(button_cosh, R.id.button_cosh);
             assignId(button_pi, R.id.button_pi);
             assignId(button_ln, R.id.button_ln);
+
+            assignId(button_e, R.id.button_e);
+            assignId(button_log, R.id.button_log);
+            assignId(button_10px, R.id.button_10powerx);
+            assignId(button_inverse_cos, R.id.button_inverse_cos);
+            assignId(button_percent, R.id.button_percent);
+            assignId(button_tanh, R.id.button_tanh);
+            assignId(button_inverse_sin, R.id.button_inverse_sin);
+            assignId(button_xpy, R.id.button_xpowery);
+
             assignId(button_xpy, R.id.button_xpowery);
             assignId(button_inverse_sin, R.id.button_inverse_sin);
             assignId(button_tanh, R.id.button_tanh);
@@ -90,88 +110,103 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        try{
-            MaterialButton button = (MaterialButton) view;
-            String buttonText = button.getText().toString();
-            String dataToCalculate = solutionTv.getText().toString();
-            switch (buttonText) {
-                case "AC":
-                    clearAll();
-                    break;
-                case "=":
-                    solutionTv.setText(resultTv.getText());
-                    break;
-                case "C":
-                    clearLast();
-                    break;
-                case "√":
-                    handleSquareRoot(dataToCalculate);
-                    break;
-                case "∛":
-                    handleCubeRoot(dataToCalculate);
-                    break;
-                case "sin":
-                case "cos":
-                case "tan⁻¹":
-                    handleTrigonometricFunction(buttonText, dataToCalculate);
-                    break;
-                case "1/x":
-                    handleReciprocal(dataToCalculate);
-                    break;
-                case "2ˣ":
-                    handleExponential(dataToCalculate, 2);
-                    break;
-                case "eˣ":
-                    handleExponential(dataToCalculate, Math.E);
-                    break;
-                case "x²":
-                    solutionTv.append("^2");
-//                    handleExponentiation(dataToCalculate, 2);
-                    break;
-                case "x³":
-                    solutionTv.append("^3");
-//                    handleExponentiation(dataToCalculate, 3);
-                    break;
-                case "π":
-                    handlePi();
-                    break;
-                case "|x|":
-                    handleAbsoluteValue(dataToCalculate);
-                    break;
-                case "sinh":
-                    handleSinh(dataToCalculate);
-                    break;
-                case "cosh":
-                    handleCosh(dataToCalculate);
-                    break;
-                case "ln":
-                    handleNaturalLog(dataToCalculate);
-                    break;
-                case "tan":
-                    handleTan(dataToCalculate);
-                    break;
-                case "x!":
-                    handleFactorial(dataToCalculate);
-                    break;
-                case "xʸ":
-                    handleXToPowerY(dataToCalculate);
-                    break;
-                case "sin⁻¹":
-                    handleASin();
-                    break;
-                case "tanh":
-                    handleTanh();
-                    break;
-                default:
-                    appendToDataToCalculate(buttonText);
-                    break;
-            }
-            evaluateAndDisplay(buttonText);
-        } catch(Exception e)
+
+        try {
+        MaterialButton button = (MaterialButton) view;
+        String buttonText = button.getText().toString();
+        String dataToCalculate = solutionTv.getText().toString();
+        switch (buttonText) {
+            case "AC":
+                clearAll();
+                break;
+            case "=":
+                solutionTv.setText(resultTv.getText());
+                solutionTv.setText("");
+                break;
+            case "C":
+                clearLast();
+                break;
+            case "√":
+                handleSquareRoot(dataToCalculate);
+                break;
+            case "∛":
+                handleCubeRoot(dataToCalculate);
+                break;
+            case "sin":
+            case "cos":
+            case "tan⁻¹":
+                handleTrigonometricFunction(buttonText, dataToCalculate);
+                break;
+            case "1/x":
+                handleReciprocal(dataToCalculate);
+                break;
+            case "2ˣ":
+                handleExponential(dataToCalculate, 2);
+                break;
+            case "eˣ":
+                handleExponential(dataToCalculate, Math.E);
+                break;
+            case "x²":
+                handleExponentiation(dataToCalculate, 2);
+                break;
+            case "x³":
+                handleExponentiation(dataToCalculate, 3);
+                break;
+            case "π":
+                handlePi();
+                break;
+            case "|x|":
+                handleAbsoluteValue(dataToCalculate);
+                break;
+            case "sinh":
+                handleSinh(dataToCalculate);
+                break;
+            case "cosh":
+                handleCosh(dataToCalculate);
+                break;
+            case "ln":
+                handleNaturalLog(dataToCalculate);
+                break;
+            case "tan":
+                handleTan(dataToCalculate);
+                break;
+            case "x!":
+                handleFactorial(dataToCalculate);
+                break;
+            case "e":
+                handleLogaricNeperian();
+                break;
+            case "log":
+                handleLog(dataToCalculate);
+                break;
+            case "cos⁻¹":
+                handleInverseCos(dataToCalculate);
+                break;
+            case "%":
+                handlePercent(dataToCalculate);
+                break;
+            case "10ˣ":
+                handlePowerOfTen(dataToCalculate);
+                break;
+            case "xʸ":
+                handleXToPowerY(dataToCalculate);
+                break;
+            case "sin⁻¹":
+                handleASin();
+                break;
+            case "tanh":
+                handleTanh();
+                break;
+            default:
+                appendToDataToCalculate(buttonText);
+                break;
+
+        }
+        evaluateAndDisplay(buttonText);
+    }catch(Exception e)
         {
             Log.d("ERROR!!!", e.toString());
         }
-    }
 
     private void handleASin() {
         solutionTv.append("sin⁻¹(");
@@ -184,6 +219,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void clearLast() {
         String currentData = solutionTv.getText().toString();
+        if (currentData.equals("NaN") || currentData.equals("Infinity") || currentData.equals("Err")) {
+            solutionTv.setText("");
+            resultTv.setText("");
+            // return;
+        }
         if (!currentData.isEmpty()) {
             solutionTv.setText(currentData.substring(0, currentData.length() - 1));
             if (solutionTv.getText().equals("")) {
@@ -196,104 +236,167 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void appendToDataToCalculate(String buttonText) {
-        String specialCharacters = "√∛sincostan2ˣeˣx²x³tan⁻¹";
-        if (!specialCharacters.contains(buttonText)) {
+        String specialCharacters = "√∛sincostan2ˣeˣx²x³tan⁻¹-()+*/";
+        if (Character.isDigit(buttonText.charAt(0)) || specialCharacters.contains(buttonText)) {
             solutionTv.append(buttonText);
         }
     }
 
-
+    private void handleASin() {
+        solutionTv.setText("sin⁻¹(");
+    }
 
     private void handleTrigonometricFunction(String function, String dataToCalculate) {
-        double number = Double.parseDouble(dataToCalculate);
-        double radians = Math.toRadians(number);
-        double result;
-
-        switch (function) {
-            case "sin":
-                result = Math.sin(radians);
-                solutionTv.setText("Error: Division by zero");
-                break;
-            case "cos":
-                result = Math.cos(radians);
-                break;
-            case "tan⁻¹":
-                result = Math.atan(number);
-                break;
-            default:
-                result = 0;
-                break;
+        try {
+            double number = Double.parseDouble(dataToCalculate);
+            double result;
+            switch (function) {
+                case "sin":
+                    result = Math.sin(number);
+                    break;
+                case "cos":
+                    result = Math.cos(number);
+                    break;
+                case "tan⁻¹":
+                    result = Math.atan(number);
+                    break;
+                default:
+                    result = 0;
+                    break;
+            }
+            solutionTv.setText(String.valueOf(result));
+        } catch (NumberFormatException e) {
+            resultTv.setText("");
+            solutionTv.setText("");
         }
-        solutionTv.setText(String.valueOf(result));
     }
+
     private void handleSquareRoot(String dataToCalculate) {
-        double number = Double.parseDouble(dataToCalculate);
-        double sqrtResult = Math.sqrt(number);
-        solutionTv.setText(String.valueOf(sqrtResult));
+        // if (dataToCalculate.isEmpty() ||
+        // !dataToCalculate.matches("[+-]?(\\d+\\.?\\d*|\\.\\d+)")) {
+        // solutionTv.setText("");
+        // return;
+        // }
+        try {
+            double number = Double.parseDouble(dataToCalculate);
+            double sqrtResult = Math.sqrt(number);
+            solutionTv.setText(String.valueOf(sqrtResult));
+
+        } catch (NumberFormatException e) {
+            System.out.println("Error: " + e.getMessage());
+            resultTv.setText("");
+            solutionTv.setText("");
+        }
     }
 
     private void handleCubeRoot(String dataToCalculate) {
-        double number = Double.parseDouble(dataToCalculate);
-        double cbrtResult = Math.cbrt(number);
-        solutionTv.setText(String.valueOf(cbrtResult));
+        try {
+            double number = Double.parseDouble(dataToCalculate);
+            double cbrtResult = Math.cbrt(number);
+            solutionTv.setText(String.valueOf(cbrtResult));
+        } catch (NumberFormatException e) {
+            resultTv.setText("");
+            solutionTv.setText("");
+        }
     }
 
     @SuppressLint("SetTextI18n")
     private void handleReciprocal(String dataToCalculate) {
-        double number = Double.parseDouble(dataToCalculate);
-        if (number != 0) {
-            double result = 1 / number;
-            solutionTv.setText(String.valueOf(result));
-        } else {
-            solutionTv.setText("Error: Division by zero");
+        try {
+            double number = Double.parseDouble(dataToCalculate);
+            double reciprocalResult = 1 / number;
+            solutionTv.setText(String.valueOf(reciprocalResult));
+        } catch (NumberFormatException e) {
+            resultTv.setText("");
+            solutionTv.setText("");
         }
     }
 
     private void handleExponential(String dataToCalculate, double base) {
-        double number = Double.parseDouble(dataToCalculate);
-        double result = Math.pow(base, number);
-        solutionTv.setText(String.valueOf(result));
+        try {
+            double number = Double.parseDouble(dataToCalculate);
+            double result = Math.pow(base, number);
+            solutionTv.setText(String.valueOf(result));
+        } catch (NumberFormatException e) {
+            resultTv.setText("");
+            solutionTv.setText("");
+        }
     }
 
     private void handleExponentiation(String dataToCalculate, int exponent) {
-        double number = Double.parseDouble(dataToCalculate);
-        double result = Math.pow(number, exponent);
-        solutionTv.setText(String.valueOf(result));
+        try {
+            double number = Double.parseDouble(dataToCalculate);
+            double result = Math.pow(number, exponent);
+            solutionTv.setText(String.valueOf(result));
+        } catch (NumberFormatException e) {
+            resultTv.setText("");
+            solutionTv.setText("");
+        }
     }
 
     private void handlePi() {
-        double piValue = Math.PI;
-        solutionTv.append(String.valueOf(piValue));
+        try {
+            double piValue = Math.PI;
+            solutionTv.append(String.valueOf(piValue));
+        } catch (NumberFormatException e) {
+            resultTv.setText("");
+            solutionTv.setText("");
+        }
     }
 
     private void handleAbsoluteValue(String dataToCalculate) {
-        double number = Double.parseDouble(dataToCalculate);
-        double absValue = Math.abs(number);
-        solutionTv.setText(String.valueOf(absValue));
+        try {
+            double number = Double.parseDouble(dataToCalculate);
+            double absValue = Math.abs(number);
+            solutionTv.setText(String.valueOf(absValue));
+        } catch (NumberFormatException e) {
+            resultTv.setText("");
+            solutionTv.setText("");
+        }
     }
 
     private void handleSinh(String dataToCalculate) {
-        double number = Double.parseDouble(dataToCalculate);
-        double sinhResult = Math.sinh(number);
-        solutionTv.setText(String.valueOf(sinhResult));
+        try {
+            double number = Double.parseDouble(dataToCalculate);
+            double sinhResult = Math.sinh(number);
+            solutionTv.setText(String.valueOf(sinhResult));
+        } catch (NumberFormatException e) {
+            resultTv.setText("");
+            solutionTv.setText("");
+        }
     }
 
     private void handleCosh(String dataToCalculate) {
-        double number = Double.parseDouble(dataToCalculate);
-        double coshResult = Math.cosh(number);
-        solutionTv.setText(String.valueOf(coshResult));
+        try {
+            double number = Double.parseDouble(dataToCalculate);
+            double coshResult = Math.cosh(number);
+            solutionTv.setText(String.valueOf(coshResult));
+        } catch (NumberFormatException e) {
+            resultTv.setText("");
+            solutionTv.setText("");
+        }
     }
 
     private void handleNaturalLog(String dataToCalculate) {
-        double number = Double.parseDouble(dataToCalculate);
-        double lnResult = Math.log(number);
-        solutionTv.setText(String.valueOf(lnResult));
+        try {
+            double number = Double.parseDouble(dataToCalculate);
+            double lnResult = Math.log(number);
+            solutionTv.setText(String.valueOf(lnResult));
+        } catch (NumberFormatException e) {
+            resultTv.setText("");
+            solutionTv.setText("");
+        }
     }
 
     private void handleTan(String dataToCalculate) {
-        double number = Double.parseDouble(dataToCalculate);
-        double tanResult = Math.tan(number);
-        solutionTv.setText(String.valueOf(tanResult));
+        try {
+            double number = Double.parseDouble(dataToCalculate);
+            double tanResult = Math.tan(number);
+            solutionTv.setText(String.valueOf(tanResult));
+        } catch (NumberFormatException e) {
+            resultTv.setText("");
+            solutionTv.setText("");
+        }
     }
 
     private void handleTanh() {
@@ -301,33 +404,117 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void handleFactorial(String dataToCalculate) {
-        int number = Integer.parseInt(dataToCalculate);
-        double factorialResult = calculateFactorial(number);
-        solutionTv.setText(String.valueOf(factorialResult));
+        try {
+            int number = Integer.parseInt(dataToCalculate);
+            double factorialResult = calculateFactorial(number);
+            solutionTv.setText(String.valueOf(factorialResult));
+        } catch (NumberFormatException e) {
+            resultTv.setText("");
+            solutionTv.setText("");
+        }
     }
 
     private void handleXToPowerY(String dataToCalculate){
         solutionTv.append("^");
     }
     private double calculateFactorial(int n) {
-        if (n == 0 || n == 1) {
-            return 1;
-        } else {
-            return n * calculateFactorial(n - 1);
+        try {
+            if (n < 0) {
+                return 0;
+            } else if (n == 0 || n == 1) {
+                return 1;
+            } else {
+                return n * calculateFactorial(n - 1);
+            }
+        } catch (StackOverflowError e) {
+            return 0;
         }
+    }
+
+    private void handleLogaricNeperian() {
+        try {
+            double number = Math.E;
+            // double logResult = Math.log(number);
+            solutionTv.setText(String.valueOf(number));
+        } catch (NumberFormatException e) {
+            resultTv.setText("");
+            solutionTv.setText("");
+        }
+    }
+
+    private void handleLog(String dataToCalculate) {
+        try {
+            double number = Double.parseDouble(dataToCalculate);
+            double logResult = Math.log10(number);
+            solutionTv.setText(String.valueOf(logResult));
+        } catch (NumberFormatException e) {
+            resultTv.setText("");
+            solutionTv.setText("");
+        }
+    }
+
+    private void handleInverseCos(String dataToCalculate) {
+        try {
+            double number = Double.parseDouble(dataToCalculate);
+            double inverseCosResult = Math.acos(number);
+            solutionTv.setText(String.valueOf(inverseCosResult));
+        } catch (NumberFormatException e) {
+            resultTv.setText("");
+            solutionTv.setText("");
+        }
+    }
+
+    private void handlePercent(String dataToCalculate) {
+        try {
+            double number = Double.parseDouble(dataToCalculate);
+            double percentResult = number / 100;
+            solutionTv.setText(String.valueOf(percentResult));
+        } catch (NumberFormatException e) {
+            resultTv.setText("");
+            solutionTv.setText("");
+        }
+    }
+
+    private void handleTanh() {
+        solutionTv.setText("tanh(");
+    }
+
+    private void handlePowerOfTen(String dataToCalculate) {
+        try {
+            double number = Double.parseDouble(dataToCalculate);
+            double powerOfTenResult = Math.pow(10, number);
+            solutionTv.setText(String.valueOf(powerOfTenResult));
+        } catch (NumberFormatException e) {
+            resultTv.setText("");
+            solutionTv.setText("");
+        }
+    }
+
+    private String revereString(String input) {
+        StringBuilder output = new StringBuilder();
+        for (int i = input.length() - 1; i >= 0; i--) {
+            output.append(input.charAt(i));
+        }
+        return output.toString();
+    }
+
+    private void handleXToPowerY(String dataToCalculate) {
+        solutionTv.append("^");
     }
 
     private void evaluateAndDisplay(String buttonText) {
         String dataToCalculate = solutionTv.getText().toString();
         String finalResult = getResult(dataToCalculate);
-//        if(buttonText.contains("√")){
-//            solutionTv.setText("");
-//        }
-        if (solutionTv.getText().equals("")) {
+        // if(buttonText.contains("√")){
+        // solutionTv.setText("");
+        // }
+        if (dataToCalculate.isEmpty()) {
             resultTv.setText("");
         }
         if (!finalResult.equals("Err")) {
             resultTv.setText(finalResult);
+            // solutionTv.setText("");
+
         }
 
     }
@@ -339,6 +526,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return output.toString();
     }
+
     String getResult(String data) {
         try {
             Log.d("MATH EQUATION", data);
@@ -350,59 +538,61 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 int equaEndLoc;
                 int i = carectLoc - 1;
                 String numbers_dot = "1234567890.";
-                while (i >= 0 && numbers_dot.contains(data.substring(i, i+1))) {
-                    baseValue = baseValue.concat(data.substring(i, i+1));
+
+                while (i >= 0 && numbers_dot.contains(data.substring(i, i + 1))) {
+                    baseValue = baseValue.concat(data.substring(i, i + 1));
                     i--;
                 }
-                equaStartLoc = i+1;
+                equaStartLoc = i + 1;
 
                 i = carectLoc + 1;
-                while (i < data.length() && numbers_dot.contains(data.substring(i, i+1))) {
-                    exponentValue = exponentValue.concat(data.substring(i, i+1));
+                while (i < data.length() && numbers_dot.contains(data.substring(i, i + 1))) {
+                    exponentValue = exponentValue.concat(data.substring(i, i + 1));
                     i++;
                 }
-                equaEndLoc = i-1;
-                if(equaEndLoc != carectLoc){
+                equaEndLoc = i - 1;
+                if (equaEndLoc != carectLoc) {
                     baseValue = revereString(baseValue);
-                    data = data.replace(baseValue+"^"+exponentValue, "Math.pow("+baseValue+","+exponentValue+")");
+                    data = data.replace(baseValue + "^" + exponentValue,
+                            "Math.pow(" + baseValue + "," + exponentValue + ")");
                 }
-                }
+            }
 
             if (data.contains("sin⁻¹(")) {
                 int sinLoc = data.indexOf("sin⁻¹(");
                 String sinValue = "";
-//                boolean isValidEquation = false;
+                // boolean isValidEquation = false;
 
                 int i = sinLoc + 6;
                 String numbers_dot = "1234567890.";
-                while (i < data.length() && numbers_dot.contains(data.substring(i, i+1))) {
-                    sinValue = sinValue.concat(data.substring(i, i+1));
+                while (i < data.length() && numbers_dot.contains(data.substring(i, i + 1))) {
+                    sinValue = sinValue.concat(data.substring(i, i + 1));
                     i++;
                 }
 
-                if(data.substring(i, i+1).equals(")")) {
-//                    isValidEquation = true;
-                    data = data.replace("sin⁻¹(" + sinValue+")", "(Math.asin("+sinValue+") * 180 / Math.PI)");
+                if (data.substring(i, i + 1).equals(")")) {
+                    // isValidEquation = true;
+                    data = data.replace("sin⁻¹(" + sinValue + ")", "(Math.asin(" + sinValue + ") * 180 / Math.PI)");
                 }
 
-//                if (isValidEquation) {
-//                }
+                // if (isValidEquation) {
+                // }
             }
 
             if (data.contains("tanh(")) {
                 int tanhLoc = data.indexOf("tanh(");
                 String tanhValue = "";
-//                boolean isValidEquation = false;
+                // boolean isValidEquation = false;
 
                 int i = tanhLoc + 5;
                 String numbers_dot = "1234567890.";
-                while (i < data.length() && numbers_dot.contains(data.substring(i, i+1))) {
-                    tanhValue = tanhValue.concat(data.substring(i, i+1));
+                while (i < data.length() && numbers_dot.contains(data.substring(i, i + 1))) {
+                    tanhValue = tanhValue.concat(data.substring(i, i + 1));
                     i++;
                 }
 
-                if(data.substring(i, i+1).equals(")")) {
-                    data = data.replace("tanh(" + tanhValue+")", "Math.tanh("+tanhValue+")");
+                if (data.substring(i, i + 1).equals(")")) {
+                    data = data.replace("tanh(" + tanhValue + ")", "Math.tanh(" + tanhValue + ")");
                 }
 
             }
