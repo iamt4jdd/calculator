@@ -3,7 +3,9 @@ package com.example.calculator;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.content.res.Configuration;
@@ -13,6 +15,7 @@ import com.google.android.material.button.MaterialButton;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.Undefined;
+
 
 import java.text.DecimalFormat;
 
@@ -26,12 +29,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     MaterialButton button_squareroot, button_sin, button_inversex, button_2px, button_tan_1, button_cuberoot,
             button_cos, button_epx, button_xp3;
 
+
     MaterialButton button_absolute, button_pi, button_sinh, button_cosh, button_ln, button_tan, button_xp2,
             button_xfactorial;
 
     MaterialButton button_e, button_log, button_10px, button_inverse_cos, button_percent, button_tanh, button_xpy, 
             button_inverse_sin;
 
+
+    MaterialButton button_xpy;
     MaterialButton buttonAC, buttonDot;
 
     @Override
@@ -80,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             assignId(button_cosh, R.id.button_cosh);
             assignId(button_pi, R.id.button_pi);
             assignId(button_ln, R.id.button_ln);
+
             assignId(button_e, R.id.button_e);
             assignId(button_log, R.id.button_log);
             assignId(button_10px, R.id.button_10powerx);
@@ -88,7 +95,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             assignId(button_tanh, R.id.button_tanh);
             assignId(button_inverse_sin, R.id.button_inverse_sin);
             assignId(button_xpy, R.id.button_xpowery);
+
+            assignId(button_xpy, R.id.button_xpowery);
+            assignId(button_inverse_sin, R.id.button_inverse_sin);
+            assignId(button_tanh, R.id.button_tanh);
         }
+
     }
 
     void assignId(MaterialButton btn, int id) {
@@ -98,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
+
         try {
         MaterialButton button = (MaterialButton) view;
         String buttonText = button.getText().toString();
@@ -194,6 +207,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         {
             Log.d("ERROR!!!", e.toString());
         }
+
+    private void handleASin() {
+        solutionTv.append("sin⁻¹(");
     }
 
     private void clearAll() {
@@ -383,6 +399,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private void handleTanh() {
+        solutionTv.setText("tanh(");
+    }
+
     private void handleFactorial(String dataToCalculate) {
         try {
             int number = Integer.parseInt(dataToCalculate);
@@ -394,6 +414,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private void handleXToPowerY(String dataToCalculate){
+        solutionTv.append("^");
+    }
     private double calculateFactorial(int n) {
         try {
             if (n < 0) {
@@ -496,6 +519,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    private String revereString(String input) {
+        StringBuilder output = new StringBuilder();
+        for (int i = input.length() - 1; i >= 0; i--) {
+            output.append(input.charAt(i));
+        }
+        return output.toString();
+    }
+
     String getResult(String data) {
         try {
             Log.d("MATH EQUATION", data);
@@ -507,6 +538,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 int equaEndLoc;
                 int i = carectLoc - 1;
                 String numbers_dot = "1234567890.";
+
                 while (i >= 0 && numbers_dot.contains(data.substring(i, i + 1))) {
                     baseValue = baseValue.concat(data.substring(i, i + 1));
                     i--;
